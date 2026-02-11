@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positioning Statement Builder | Intro to Marketing | Loyola University Chicago</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ========================================
+           1. CSS CUSTOM PROPERTIES
+           ======================================== */
+        :root {
+            --maroon: #860033;
+            --maroon-dark: #5a0722;
+            --gold: #eaaa00;
+            --gold-muted: #D4A843;
+            --color-audience: #2D6A4F;
+            --color-brand: #5a0722;
+            --color-category: #1B4965;
+            --color-difference: #B5651D;
+            --color-proof: #6A4C93;
+            --bg-page: #f5f3f0;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --font-heading: 'Roboto Condensed', sans-serif;
+            --font-body: 'Source Sans 3', sans-serif;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+        }
+
+        /* ========================================
+           2. RESET & BASE
+           ======================================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--bg-page);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           3. TYPOGRAPHY
+           ======================================== */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+        h2 { font-size: clamp(1.4rem, 3vw, 2rem); text-transform: uppercase; letter-spacing: 0.03em; }
+        h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+        p { margin-bottom: 0.5rem; }
+        a { color: var(--maroon); text-decoration: none; }
+
+        /* ========================================
+           4. BUTTONS
+           ======================================== */
+        .btn-primary, .btn-secondary, .btn-outline {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; border-radius: var(--radius-sm);
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; border: 2px solid transparent;
+            transition: all 200ms ease; text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .btn-primary {
+            background: var(--maroon); color: #fff; border-color: var(--maroon);
+        }
+        .btn-primary:hover { background: var(--maroon-dark); border-color: var(--maroon-dark); transform: translateY(-1px); }
+        .btn-secondary {
+            background: #fff; color: var(--maroon); border-color: var(--maroon);
+        }
+        .btn-secondary:hover { background: var(--maroon); color: #fff; }
+        .btn-outline {
+            background: transparent; color: var(--text-secondary); border-color: #ccc;
+        }
+        .btn-outline:hover { border-color: var(--maroon); color: var(--maroon); }
+        .btn-primary:disabled, .btn-secondary:disabled {
+            opacity: 0.5; cursor: not-allowed; transform: none;
+        }
+
+        /* ========================================
+           5. NAVIGATION
+           ======================================== */
+        #main-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: var(--maroon-dark);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem; height: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 0.75rem; color: #fff;
+        }
+        .nav-logo {
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.2rem;
+            background: var(--gold); color: var(--maroon-dark);
+            padding: 0.2rem 0.5rem; border-radius: 4px;
+        }
+        .nav-title {
+            font-family: var(--font-heading); font-size: 0.95rem; font-weight: 400;
+            opacity: 0.9;
+        }
+        .nav-links {
+            list-style: none; display: flex; gap: 0;
+        }
+        .nav-link {
+            display: flex; align-items: center; gap: 0.4rem;
+            color: rgba(255,255,255,0.7); padding: 0 1rem; height: 60px;
+            font-family: var(--font-heading); font-size: 0.85rem; font-weight: 400;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            border-bottom: 3px solid transparent;
+            transition: all 200ms ease; text-decoration: none;
+        }
+        .nav-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .nav-link.active {
+            color: #fff; border-bottom-color: var(--gold);
+        }
+        .nav-link i { font-size: 0.9rem; }
+
+        /* ========================================
+           6. GLOBAL PROGRESS BAR
+           ======================================== */
+        #global-progress {
+            display: flex; height: 4px; background: rgba(0,0,0,0.1);
+        }
+        .progress-segment {
+            flex: 1; background: transparent;
+            transition: background 500ms ease;
+        }
+        .progress-segment.completed { background: var(--gold); }
+
+        /* ========================================
+           7. SECTIONS
+           ======================================== */
+        .app-section {
+            display: none; min-height: calc(100vh - 64px);
+            animation: fadeIn 400ms ease;
+        }
+        .app-section.active { display: block; }
+        .section-header {
+            text-align: center; padding: 2.5rem 1.5rem 1.5rem;
+            max-width: 700px; margin: 0 auto;
+        }
+        .section-header h2 { color: var(--maroon-dark); margin-bottom: 0.5rem; }
+        .section-header p { color: var(--text-secondary); font-size: 1.05rem; }
+
+        /* ========================================
+           8. WELCOME SECTION
+           ======================================== */
+        .hero {
+            background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon) 100%);
+            color: #fff; padding: 4rem 2rem;
+            display: flex; align-items: center; justify-content: center; gap: 3rem;
+            flex-wrap: wrap; min-height: 60vh;
+        }
+        .hero-content { max-width: 500px; }
+        .hero-content h1 { margin-bottom: 1rem; }
+        .gold-text { color: var(--gold); }
+        .hero-subtitle {
+            font-size: 1.15rem; opacity: 0.9; margin-bottom: 2rem; line-height: 1.7;
+        }
+        .hero-visual { perspective: 800px; }
+        .statement-diagram {
+            display: flex; flex-direction: column; gap: 0.5rem;
+            padding: 1.5rem; background: rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.15);
+        }
+        .diagram-piece {
+            padding: 0.7rem 1.2rem; border-radius: var(--radius-sm);
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            opacity: 0; transform: translateX(-30px);
+            animation: slideInPiece 500ms ease forwards;
+        }
+        .diagram-piece:nth-child(1) { background: var(--color-audience); animation-delay: 200ms; }
+        .diagram-piece:nth-child(2) { background: var(--color-brand); animation-delay: 400ms; }
+        .diagram-piece:nth-child(3) { background: var(--color-category); animation-delay: 600ms; }
+        .diagram-piece:nth-child(4) { background: var(--color-difference); animation-delay: 800ms; }
+        .diagram-piece:nth-child(5) { background: var(--color-proof); animation-delay: 1000ms; }
+
+        .welcome-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem; padding: 3rem 2rem; max-width: 1000px; margin: 0 auto;
+        }
+        .info-card {
+            background: var(--bg-card); border-radius: var(--radius-md);
+            padding: 2rem; box-shadow: var(--shadow-md); text-align: center;
+            transition: transform 200ms ease;
+        }
+        .info-card:hover { transform: translateY(-4px); }
+        .info-card i {
+            font-size: 2rem; color: var(--gold); margin-bottom: 1rem; display: block;
+        }
+        .info-card h3 { margin-bottom: 0.5rem; color: var(--maroon-dark); }
+        .info-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* ========================================
+           9. LEARN SECTION
+           ======================================== */
+        .component-tabs {
+            display: flex; justify-content: center; gap: 0.5rem;
+            padding: 0 1.5rem; flex-wrap: wrap; max-width: 900px; margin: 0 auto 1.5rem;
+        }
+        .comp-tab {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1rem; border-radius: var(--radius-sm);
+            background: var(--bg-card); border: 2px solid #e0e0e0;
+            cursor: pointer; font-family: var(--font-heading); font-size: 0.85rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+            transition: all 200ms ease; color: var(--text-secondary);
+            position: relative;
+        }
+        .comp-tab .tab-number {
+            width: 24px; height: 24px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; background: #e0e0e0; color: #fff;
+            transition: background 200ms ease;
+        }
+        .comp-tab.active { border-color: var(--tab-color, var(--maroon)); color: var(--text-primary); }
+        .comp-tab.active .tab-number { background: var(--tab-color, var(--maroon)); }
+        .comp-tab.visited::after {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            font-size: 0.6rem; color: #2D6A4F; position: absolute; top: -4px; right: -4px;
+            background: #fff; border-radius: 50%; width: 16px; height: 16px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .component-panel {
+            display: none; max-width: 900px; margin: 0 auto;
+            padding: 0 1.5rem 2rem; animation: fadeIn 300ms ease;
+        }
+        .component-panel.active { display: block; }
+        .panel-header {
+            border-left: 4px solid var(--panel-color, var(--maroon));
+            padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+            background: var(--bg-card); border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            box-shadow: var(--shadow-sm);
+        }
+        .panel-header h3 { color: var(--panel-color, var(--maroon)); margin-bottom: 0.25rem; }
+        .panel-definition { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 0; }
+        .panel-body {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+        .key-questions, .tips-box {
+            background: var(--bg-card); border-radius: var(--radius-md);
+            padding: 1.5rem; box-shadow: var(--shadow-sm);
+        }
+        .key-questions h4, .tips-box h4, .brand-examples h4 {
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em;
+            margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .key-questions h4 i { color: var(--color-category); }
+        .tips-box h4 i { color: var(--gold); }
+        .brand-examples h4 i { color: var(--maroon); }
+        .key-questions ul, .tips-box ul {
+            list-style: none; display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .key-questions li, .tips-box li {
+            padding-left: 1.2rem; position: relative; font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        .key-questions li::before { content: '?'; color: var(--color-category); position: absolute; left: 0; font-weight: 700; }
+        .tips-box li::before { content: '\f0eb'; font-family: 'Font Awesome 6 Free'; font-weight: 400; color: var(--gold); position: absolute; left: 0; font-size: 0.8rem; }
+        .tips-box {
+            background: rgba(234, 170, 0, 0.06); border: 1px solid rgba(234, 170, 0, 0.2);
+        }
+        .brand-examples {
+            grid-column: 1 / -1;
+        }
+        .example-cards-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+        }
+        .mini-example-card {
+            background: var(--bg-card); border-radius: var(--radius-sm);
+            padding: 1rem 1.2rem; box-shadow: var(--shadow-sm);
+            border-left: 3px solid var(--panel-color, var(--maroon));
+        }
+        .mini-example-card .brand-icon {
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--panel-color, var(--maroon)); margin-bottom: 0.4rem;
+        }
+        .mini-example-card p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
+        .panel-footer {
+            text-align: right; padding-top: 1.5rem; margin-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Quiz */
+        .quiz-container {
+            max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem;
+        }
+        .quiz-container.hidden { display: none; }
+        .quiz-container h3 { text-align: center; margin-bottom: 0.5rem; color: var(--maroon-dark); }
+        .quiz-subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .quiz-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+            max-width: 800px; margin: 0 auto;
+        }
+        .quiz-descriptions, .quiz-components { display: flex; flex-direction: column; gap: 0.75rem; }
+        .quiz-descriptions h4, .quiz-components h4 {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--text-secondary); margin-bottom: 0.25rem;
+        }
+        .quiz-item {
+            padding: 0.75rem 1rem; border-radius: var(--radius-sm);
+            border: 2px solid #e0e0e0; cursor: pointer;
+            font-size: 0.9rem; transition: all 200ms ease;
+            background: var(--bg-card);
+        }
+        .quiz-item:hover { border-color: var(--gold); }
+        .quiz-item.selected { border-color: var(--gold); background: rgba(234,170,0,0.08); }
+        .quiz-item.correct { border-color: #2D6A4F; background: rgba(45,106,79,0.08); }
+        .quiz-item.incorrect { border-color: #c0392b; animation: shake 400ms ease; }
+        .quiz-item.matched { opacity: 0.5; pointer-events: none; border-color: #2D6A4F; background: rgba(45,106,79,0.08); }
+        .quiz-result {
+            text-align: center; padding: 1.5rem; margin-top: 1.5rem;
+            background: rgba(45,106,79,0.06); border-radius: var(--radius-md);
+            border: 1px solid rgba(45,106,79,0.2); display: none;
+        }
+        .quiz-result h4 { color: #2D6A4F; margin-bottom: 0.5rem; }
+
+        /* ========================================
+           10. EXAMPLES SECTION
+           ======================================== */
+        .color-legend {
+            display: flex; justify-content: center; gap: 1rem;
+            flex-wrap: wrap; padding: 0 1.5rem 1.5rem;
+        }
+        .legend-item {
+            display: flex; align-items: center; gap: 0.4rem;
+            font-size: 0.8rem; font-family: var(--font-heading);
+            text-transform: uppercase; letter-spacing: 0.03em;
+            color: var(--text-secondary);
+        }
+        .legend-item::before {
+            content: ''; width: 12px; height: 12px; border-radius: 3px;
+            background: var(--legend-color);
+        }
+        .examples-list {
+            max-width: 900px; margin: 0 auto; padding: 0 1.5rem 2rem;
+            display: flex; flex-direction: column; gap: 1.5rem;
+        }
+        .example-card {
+            background: var(--bg-card); border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md); overflow: hidden;
+            border-top: 4px solid var(--gold);
+        }
+        .example-brand-header {
+            padding: 1.2rem 1.5rem; display: flex; align-items: center;
+            justify-content: space-between; border-bottom: 1px solid #f0f0f0;
+        }
+        .example-brand-header h3 {
+            font-size: 1.2rem; color: var(--maroon-dark);
+        }
+        .brand-industry {
+            font-size: 0.8rem; color: var(--text-secondary);
+            background: #f5f3f0; padding: 0.25rem 0.75rem; border-radius: 20px;
+            font-family: var(--font-heading); text-transform: uppercase;
+        }
+        .color-coded-statement {
+            padding: 1.5rem; font-size: 1.1rem; line-height: 1.8;
+            color: var(--text-primary); border: none; margin: 0;
+            font-style: normal;
+        }
+        .comp-highlight {
+            padding: 0.15rem 0.3rem; border-radius: 3px;
+            position: relative; cursor: help;
+            transition: all 200ms ease;
+        }
+        .comp-highlight.hl-audience { background: rgba(45,106,79,0.12); border-bottom: 2px solid var(--color-audience); }
+        .comp-highlight.hl-brand { background: rgba(90,7,34,0.10); border-bottom: 2px solid var(--color-brand); }
+        .comp-highlight.hl-category { background: rgba(27,73,101,0.10); border-bottom: 2px solid var(--color-category); }
+        .comp-highlight.hl-difference { background: rgba(181,101,29,0.10); border-bottom: 2px solid var(--color-difference); }
+        .comp-highlight.hl-proof { background: rgba(106,76,147,0.10); border-bottom: 2px solid var(--color-proof); }
+        .comp-highlight:hover { filter: brightness(0.95); }
+
+        .tooltip {
+            position: absolute; bottom: calc(100% + 8px); left: 50%;
+            transform: translateX(-50%); padding: 0.5rem 0.75rem;
+            background: var(--text-primary); color: #fff; font-size: 0.8rem;
+            border-radius: var(--radius-sm); white-space: nowrap;
+            pointer-events: none; opacity: 0; transition: opacity 200ms ease;
+            z-index: 100; font-style: normal;
+        }
+        .tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent; border-top-color: var(--text-primary);
+        }
+        .comp-highlight:hover .tooltip { opacity: 1; }
+
+        .example-breakdown-toggle {
+            padding: 0.75rem 1.5rem; background: #fafafa; border: none;
+            border-top: 1px solid #f0f0f0; width: 100%; text-align: left;
+            cursor: pointer; font-family: var(--font-heading); font-size: 0.85rem;
+            color: var(--text-secondary); display: flex; align-items: center;
+            gap: 0.5rem; transition: background 200ms ease;
+        }
+        .example-breakdown-toggle:hover { background: #f5f3f0; }
+        .example-breakdown-toggle i { transition: transform 200ms ease; }
+        .example-breakdown-toggle.open i { transform: rotate(90deg); }
+        .example-breakdown {
+            display: none; padding: 1rem 1.5rem; background: #fafafa;
+            border-top: 1px solid #f0f0f0;
+        }
+        .example-breakdown.open { display: block; }
+        .breakdown-item {
+            display: flex; gap: 1rem; padding: 0.5rem 0;
+            font-size: 0.9rem; align-items: baseline;
+        }
+        .breakdown-label {
+            font-family: var(--font-heading); font-weight: 700;
+            text-transform: uppercase; font-size: 0.75rem;
+            letter-spacing: 0.04em; min-width: 130px;
+            padding: 0.2rem 0.5rem; border-radius: 3px; text-align: center;
+            color: #fff; flex-shrink: 0;
+        }
+        .breakdown-value { color: var(--text-secondary); }
+
+        .examples-footer { text-align: center; padding: 2rem 1.5rem 3rem; }
+
+        /* ========================================
+           11. BUILDER SECTION
+           ======================================== */
+        .step-progress {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0; padding: 0 1.5rem 2rem; max-width: 700px; margin: 0 auto;
+        }
+        .step-indicator {
+            display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+            z-index: 1;
+        }
+        .step-circle {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
+            background: #e0e0e0; color: #fff; transition: all 300ms ease;
+        }
+        .step-indicator.active .step-circle { background: var(--step-color, var(--maroon)); transform: scale(1.1); }
+        .step-indicator.completed .step-circle { background: #2D6A4F; }
+        .step-indicator span {
+            font-size: 0.7rem; text-transform: uppercase; font-family: var(--font-heading);
+            color: var(--text-secondary); letter-spacing: 0.03em;
+        }
+        .step-indicator.active span { color: var(--text-primary); font-weight: 700; }
+        .step-connector {
+            flex: 1; height: 3px; background: #e0e0e0; transition: background 300ms ease;
+            margin-bottom: 1.2rem;
+        }
+        .step-connector.completed { background: #2D6A4F; }
+
+        .builder-step {
+            display: none; max-width: 900px; margin: 0 auto; padding: 0 1.5rem 2rem;
+            animation: fadeIn 300ms ease;
+        }
+        .builder-step.active { display: block; }
+        .step-content {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+        }
+        .step-guidance {
+            background: var(--bg-card); border-radius: var(--radius-md);
+            padding: 1.5rem; box-shadow: var(--shadow-sm);
+        }
+        .step-guidance h3 {
+            display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;
+        }
+        .step-question {
+            font-size: 1.1rem; color: var(--text-primary); font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .guidance-tips { margin-bottom: 1rem; }
+        .guidance-tips p { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; }
+        .guidance-tips ul {
+            list-style: none; display: flex; flex-direction: column; gap: 0.3rem;
+        }
+        .guidance-tips li {
+            font-size: 0.9rem; color: var(--text-secondary);
+            padding-left: 1.2rem; position: relative;
+        }
+        .guidance-tips li::before {
+            content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; left: 0; color: var(--gold);
+        }
+        .guidance-example {
+            background: #f9f8f6; border-radius: var(--radius-sm);
+            padding: 1rem; border-left: 3px solid var(--gold);
+        }
+        .guidance-example p:first-child { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .guidance-example .example-text {
+            font-style: italic; color: var(--text-secondary); font-size: 0.9rem; margin: 0;
+        }
+        .step-input {
+            display: flex; flex-direction: column;
+        }
+        .step-input label {
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.03em;
+            margin-bottom: 0.5rem; color: var(--text-primary);
+        }
+        .step-input textarea {
+            width: 100%; min-height: 120px; padding: 1rem;
+            border: 2px solid #e0e0e0; border-radius: var(--radius-md);
+            font-family: var(--font-body); font-size: 1rem; line-height: 1.5;
+            resize: vertical; transition: border-color 200ms ease;
+            background: var(--bg-card);
+        }
+        .step-input textarea:focus {
+            outline: none; border-color: var(--step-color, var(--gold));
+        }
+        .char-counter {
+            text-align: right; font-size: 0.8rem; color: var(--text-secondary);
+            margin-top: 0.3rem; font-family: var(--font-heading);
+        }
+        .char-counter.warning { color: var(--gold); }
+        .char-counter.limit { color: #c0392b; }
+        .input-feedback {
+            font-size: 0.85rem; margin-top: 0.5rem; min-height: 1.4rem;
+            color: var(--text-secondary); font-style: italic;
+        }
+        .input-feedback.warn { color: #B5651D; }
+        .step-navigation {
+            display: flex; justify-content: space-between; margin-top: 1.5rem;
+            max-width: 900px; margin-left: auto; margin-right: auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Live Preview Bar */
+        .live-preview-bar {
+            position: sticky; bottom: 0; left: 0; right: 0;
+            background: var(--bg-card); border-top: 2px solid var(--gold);
+            padding: 1rem 1.5rem; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+        .preview-label {
+            font-family: var(--font-heading); font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            color: var(--text-secondary); margin-bottom: 0.3rem;
+        }
+        .preview-text {
+            font-size: 0.95rem; line-height: 1.6; margin: 0;
+        }
+        .preview-slot {
+            padding: 0.1rem 0.3rem; border-radius: 3px;
+            font-weight: 600;
+        }
+        .preview-slot.empty {
+            color: #aaa; background: #f0f0f0; font-weight: 400; font-style: italic;
+        }
+        .preview-slot.filled-audience { color: var(--color-audience); background: rgba(45,106,79,0.1); }
+        .preview-slot.filled-brand { color: var(--color-brand); background: rgba(90,7,34,0.1); }
+        .preview-slot.filled-category { color: var(--color-category); background: rgba(27,73,101,0.1); }
+        .preview-slot.filled-difference { color: var(--color-difference); background: rgba(181,101,29,0.1); }
+        .preview-slot.filled-proof { color: var(--color-proof); background: rgba(106,76,147,0.1); }
+
+        /* ========================================
+           12. PREVIEW SECTION
+           ======================================== */
+        .final-statement-card {
+            max-width: 800px; margin: 0 auto 2rem;
+            background: var(--bg-card); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg); overflow: hidden;
+            border-top: 4px solid var(--gold);
+        }
+        .statement-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.2rem; background: rgba(234,170,0,0.1);
+            font-family: var(--font-heading); font-weight: 700;
+            font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 0.04em; color: var(--gold-muted);
+            border-bottom-right-radius: var(--radius-sm);
+        }
+        .final-statement-text {
+            padding: 2rem; font-size: 1.25rem; line-height: 1.9;
+            border: none; margin: 0; font-style: normal;
+        }
+
+        .breakdown-table {
+            max-width: 800px; margin: 0 auto 2rem; padding: 0 1.5rem;
+        }
+        .breakdown-table h3 {
+            font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em;
+            color: var(--maroon-dark); margin-bottom: 1rem;
+        }
+        .breakdown-table table {
+            width: 100%; border-collapse: collapse;
+            background: var(--bg-card); border-radius: var(--radius-md);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+        }
+        .breakdown-table tr { border-bottom: 1px solid #f0f0f0; }
+        .breakdown-table tr:last-child { border-bottom: none; }
+        .breakdown-table td { padding: 0.75rem 1rem; font-size: 0.95rem; }
+        .breakdown-table .comp-label {
+            font-family: var(--font-heading); font-weight: 700;
+            text-transform: uppercase; font-size: 0.8rem;
+            letter-spacing: 0.04em; width: 160px; color: #fff;
+            text-align: center;
+        }
+        .comp-label.cl-audience { background: var(--color-audience); }
+        .comp-label.cl-brand { background: var(--color-brand); }
+        .comp-label.cl-category { background: var(--color-category); }
+        .comp-label.cl-difference { background: var(--color-difference); }
+        .comp-label.cl-proof { background: var(--color-proof); }
+
+        .export-actions {
+            display: flex; justify-content: center; gap: 1rem;
+            flex-wrap: wrap; max-width: 800px; margin: 0 auto 2rem;
+            padding: 0 1.5rem;
+        }
+
+        .self-evaluation {
+            max-width: 800px; margin: 0 auto 3rem; padding: 0 1.5rem;
+        }
+        .self-evaluation h3 {
+            font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em;
+            color: var(--maroon-dark); margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .self-evaluation label {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem 1rem; background: var(--bg-card);
+            border-radius: var(--radius-sm); margin-bottom: 0.5rem;
+            cursor: pointer; font-size: 0.95rem; color: var(--text-secondary);
+            transition: background 200ms ease; box-shadow: var(--shadow-sm);
+        }
+        .self-evaluation label:hover { background: #f9f8f6; }
+        .self-evaluation input[type="checkbox"] {
+            width: 20px; height: 20px; accent-color: var(--gold);
+            cursor: pointer;
+        }
+
+        /* ========================================
+           13. TOAST NOTIFICATION
+           ======================================== */
+        .toast {
+            position: fixed; top: 80px; right: 1.5rem; z-index: 2000;
+            padding: 0.75rem 1.25rem; border-radius: var(--radius-sm);
+            font-family: var(--font-heading); font-size: 0.9rem;
+            color: #fff; box-shadow: var(--shadow-lg);
+            transform: translateX(120%); transition: transform 300ms ease;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: #2D6A4F; }
+        .toast.error { background: #c0392b; }
+
+        /* ========================================
+           14. FOOTER
+           ======================================== */
+        footer {
+            background: var(--maroon-dark); color: rgba(255,255,255,0.7);
+            text-align: center; padding: 1.5rem;
+            font-size: 0.85rem;
+        }
+        footer strong { color: var(--gold); }
+
+        /* ========================================
+           15. ANIMATIONS
+           ======================================== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInPiece {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* ========================================
+           16. RESPONSIVE
+           ======================================== */
+        @media (max-width: 768px) {
+            #main-nav {
+                position: fixed; bottom: 0; top: auto; left: 0; right: 0;
+                height: 56px; padding: 0;
+                box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+            }
+            .nav-brand { display: none; }
+            .nav-links {
+                width: 100%; justify-content: space-around;
+            }
+            .nav-link {
+                flex-direction: column; gap: 0.15rem; padding: 0.4rem 0.5rem;
+                height: 56px; justify-content: center;
+                font-size: 0.65rem; border-bottom: none; border-top: 3px solid transparent;
+            }
+            .nav-link.active { border-top-color: var(--gold); border-bottom-color: transparent; }
+            .nav-link i { font-size: 1.1rem; }
+            #global-progress { position: fixed; top: 0; left: 0; right: 0; z-index: 999; }
+            .app-section { padding-bottom: 70px; }
+            .hero { padding: 2.5rem 1.5rem; min-height: auto; flex-direction: column; text-align: center; }
+            .hero-content { max-width: 100%; }
+            .panel-body { grid-template-columns: 1fr; }
+            .step-content { grid-template-columns: 1fr; }
+            .quiz-grid { grid-template-columns: 1fr; }
+            .step-progress { gap: 0; padding: 0 0.5rem 1.5rem; }
+            .step-indicator span { font-size: 0.6rem; }
+            .step-circle { width: 30px; height: 30px; font-size: 0.75rem; }
+            .live-preview-bar { bottom: 56px; }
+            .component-tabs { gap: 0.3rem; }
+            .comp-tab { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+            .comp-tab .tab-label { display: none; }
+            .export-actions { flex-direction: column; align-items: stretch; }
+        }
+
+        /* ========================================
+           17. ACCESSIBILITY
+           ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        :focus-visible {
+            outline: 3px solid var(--gold); outline-offset: 2px;
+        }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px;
+            padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav id="main-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-brand">
+            <span class="nav-logo">LUC</span>
+            <span class="nav-title">Positioning Statement Builder</span>
+        </div>
+        <ul class="nav-links" role="tablist">
+            <li role="presentation"><a href="#" class="nav-link active" role="tab" data-section="welcome" aria-selected="true"><i class="fas fa-home"></i><span>Home</span></a></li>
+            <li role="presentation"><a href="#" class="nav-link" role="tab" data-section="learn" aria-selected="false"><i class="fas fa-graduation-cap"></i><span>Learn</span></a></li>
+            <li role="presentation"><a href="#" class="nav-link" role="tab" data-section="examples" aria-selected="false"><i class="fas fa-lightbulb"></i><span>Examples</span></a></li>
+            <li role="presentation"><a href="#" class="nav-link" role="tab" data-section="builder" aria-selected="false"><i class="fas fa-hammer"></i><span>Build</span></a></li>
+            <li role="presentation"><a href="#" class="nav-link" role="tab" data-section="preview" aria-selected="false"><i class="fas fa-eye"></i><span>Preview</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- PROGRESS BAR -->
+    <div id="global-progress" role="progressbar" aria-label="Overall progress">
+        <div class="progress-segment" data-seg="welcome"></div>
+        <div class="progress-segment" data-seg="learn"></div>
+        <div class="progress-segment" data-seg="examples"></div>
+        <div class="progress-segment" data-seg="builder"></div>
+        <div class="progress-segment" data-seg="preview"></div>
+    </div>
+
+    <!-- ========================= SECTION 1: WELCOME ========================= -->
+    <section id="welcome" class="app-section active" role="tabpanel">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Master the Art of<br><span class="gold-text">Positioning Statements</span></h1>
+                <p class="hero-subtitle">A positioning statement defines how your brand uniquely serves its target audience. It's the foundation of every great marketing strategy.</p>
+                <button class="btn-primary" onclick="navigateTo('learn')">
+                    Start Learning <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="hero-visual">
+                <div class="statement-diagram">
+                    <div class="diagram-piece">1. Target Audience</div>
+                    <div class="diagram-piece">2. Brand Name</div>
+                    <div class="diagram-piece">3. Frame of Reference</div>
+                    <div class="diagram-piece">4. Point of Difference</div>
+                    <div class="diagram-piece">5. Reason to Believe</div>
+                </div>
+            </div>
+        </div>
+        <div class="welcome-cards">
+            <div class="info-card">
+                <i class="fas fa-bullseye"></i>
+                <h3>Why It Matters</h3>
+                <p>Positioning statements guide all marketing decisions&mdash;from messaging and pricing to channel strategy. They keep your brand focused and differentiated.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-puzzle-piece"></i>
+                <h3>5 Key Components</h3>
+                <p>Every strong positioning statement has five essential parts. Learn what each one means and how they fit together to create a compelling brand position.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-pen-fancy"></i>
+                <h3>Build Your Own</h3>
+                <p>Use our step-by-step builder to craft a positioning statement for your brand idea. Get guided prompts, tips, and real-time feedback as you write.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================= SECTION 2: LEARN ========================= -->
+    <section id="learn" class="app-section" role="tabpanel">
+        <div class="section-header">
+            <h2>The 5 Components</h2>
+            <p>Click each component to explore what it means and see real-world examples. View all five to unlock the knowledge check.</p>
+        </div>
+
+        <div class="component-tabs" role="tablist" aria-label="Positioning statement components">
+            <button class="comp-tab active" role="tab" data-comp="audience" style="--tab-color: var(--color-audience)">
+                <span class="tab-number">1</span><span class="tab-label">Target Audience</span>
+            </button>
+            <button class="comp-tab" role="tab" data-comp="brand" style="--tab-color: var(--color-brand)">
+                <span class="tab-number">2</span><span class="tab-label">Brand Name</span>
+            </button>
+            <button class="comp-tab" role="tab" data-comp="category" style="--tab-color: var(--color-category)">
+                <span class="tab-number">3</span><span class="tab-label">Frame of Reference</span>
+            </button>
+            <button class="comp-tab" role="tab" data-comp="difference" style="--tab-color: var(--color-difference)">
+                <span class="tab-number">4</span><span class="tab-label">Point of Difference</span>
+            </button>
+            <button class="comp-tab" role="tab" data-comp="proof" style="--tab-color: var(--color-proof)">
+                <span class="tab-number">5</span><span class="tab-label">Reason to Believe</span>
+            </button>
+        </div>
+
+        <!-- Panels are generated by JavaScript -->
+        <div id="learn-panels"></div>
+
+        <!-- Quiz (hidden until all tabs visited) -->
+        <div id="learn-quiz" class="quiz-container hidden">
+            <h3><i class="fas fa-brain"></i> Knowledge Check</h3>
+            <p class="quiz-subtitle">Match each description on the left with the correct component on the right.</p>
+            <div class="quiz-grid">
+                <div class="quiz-descriptions" id="quiz-descriptions">
+                    <h4>Descriptions</h4>
+                </div>
+                <div class="quiz-components" id="quiz-components">
+                    <h4>Components</h4>
+                </div>
+            </div>
+            <div class="quiz-result" id="quiz-result">
+                <h4><i class="fas fa-check-circle"></i> All Matched Correctly!</h4>
+                <p>You've got a solid understanding of the five components.</p>
+                <button class="btn-primary" onclick="navigateTo('examples')" style="margin-top: 1rem;">
+                    See Full Examples <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================= SECTION 3: EXAMPLES ========================= -->
+    <section id="examples" class="app-section" role="tabpanel">
+        <div class="section-header">
+            <h2>Positioning Statements in Action</h2>
+            <p>See how leading brands construct their positioning statements. Hover over each highlighted segment to identify the component.</p>
+        </div>
+
+        <div class="color-legend">
+            <span class="legend-item" style="--legend-color: var(--color-audience)">Target Audience</span>
+            <span class="legend-item" style="--legend-color: var(--color-brand)">Brand</span>
+            <span class="legend-item" style="--legend-color: var(--color-category)">Category</span>
+            <span class="legend-item" style="--legend-color: var(--color-difference)">Point of Difference</span>
+            <span class="legend-item" style="--legend-color: var(--color-proof)">Reason to Believe</span>
+        </div>
+
+        <!-- Examples generated by JavaScript -->
+        <div class="examples-list" id="examples-list"></div>
+
+        <div class="examples-footer">
+            <button class="btn-primary" onclick="navigateTo('builder')">
+                Now Build Your Own <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- ========================= SECTION 4: BUILDER ========================= -->
+    <section id="builder" class="app-section" role="tabpanel">
+        <div class="section-header">
+            <h2>Build Your Positioning Statement</h2>
+            <p>Follow each step to craft your own positioning statement. Take your time with each component.</p>
+        </div>
+
+        <div class="step-progress" id="step-progress"></div>
+
+        <!-- Builder steps generated by JavaScript -->
+        <div id="builder-steps"></div>
+
+        <div class="live-preview-bar" id="live-preview" aria-live="polite">
+            <p class="preview-label"><i class="fas fa-eye"></i> Live Preview</p>
+            <p class="preview-text" id="preview-text"></p>
+        </div>
+    </section>
+
+    <!-- ========================= SECTION 5: PREVIEW ========================= -->
+    <section id="preview" class="app-section" role="tabpanel">
+        <div class="section-header">
+            <h2>Your Positioning Statement</h2>
+            <p>Review your completed statement below and export it.</p>
+        </div>
+
+        <div class="final-statement-card">
+            <div class="statement-badge"><i class="fas fa-award"></i> Completed Statement</div>
+            <blockquote class="final-statement-text" id="final-statement"></blockquote>
+        </div>
+
+        <div class="breakdown-table">
+            <h3>Component Breakdown</h3>
+            <table id="breakdown-table-body">
+                <tr><td class="comp-label cl-audience">Target Audience</td><td id="bd-audience"></td></tr>
+                <tr><td class="comp-label cl-brand">Brand</td><td id="bd-brand"></td></tr>
+                <tr><td class="comp-label cl-category">Category</td><td id="bd-category"></td></tr>
+                <tr><td class="comp-label cl-difference">Point of Difference</td><td id="bd-difference"></td></tr>
+                <tr><td class="comp-label cl-proof">Reason to Believe</td><td id="bd-proof"></td></tr>
+            </table>
+        </div>
+
+        <div class="export-actions">
+            <button class="btn-primary" onclick="copyToClipboard()">
+                <i class="fas fa-copy"></i> Copy to Clipboard
+            </button>
+            <button class="btn-secondary" onclick="downloadAsText()">
+                <i class="fas fa-download"></i> Download as Text
+            </button>
+            <button class="btn-outline" onclick="startOver()">
+                <i class="fas fa-redo"></i> Start Over
+            </button>
+        </div>
+
+        <div class="self-evaluation">
+            <h3><i class="fas fa-clipboard-check"></i> Self-Evaluation Checklist</h3>
+            <label><input type="checkbox"> Is my target audience specific and well-defined?</label>
+            <label><input type="checkbox"> Is my frame of reference clear and recognizable?</label>
+            <label><input type="checkbox"> Is my point of difference truly unique and compelling?</label>
+            <label><input type="checkbox"> Is my reason to believe credible and specific?</label>
+            <label><input type="checkbox"> Does the complete statement read naturally and clearly?</label>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>Loyola University Chicago</strong> &middot; Introduction to Marketing &middot; Positioning Statement Builder</p>
+    </footer>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // =====================
+        // DATA
+        // =====================
+        const COMPONENTS = [
+            {
+                id: 'audience', name: 'Target Audience', color: 'var(--color-audience)', colorHex: '#2D6A4F',
+                icon: 'fa-users',
+                definition: 'The specific group of consumers you want to reach with your product or service. A well-defined target audience goes beyond basic demographics to include psychographics, behaviors, and unmet needs.',
+                questions: [
+                    'Who are they? (age, income, occupation, location)',
+                    'What do they need that they\'re not getting?',
+                    'What motivates their purchase decisions?',
+                    'Where do they spend their time and attention?'
+                ],
+                examples: [
+                    { brand: 'Nike', text: 'Athletes and fitness enthusiasts who want high-performance gear to push their limits' },
+                    { brand: 'Apple', text: 'Creative professionals and tech enthusiasts who value elegant design and seamless user experience' },
+                    { brand: 'Starbucks', text: 'Urban professionals and students who want a premium, customizable coffee experience' }
+                ],
+                tips: [
+                    '"Everyone" is not a target audience\u2014be specific',
+                    'Think beyond demographics to psychographics and behaviors',
+                    'Identify unmet needs that your product addresses',
+                    'A narrow audience leads to stronger positioning'
+                ],
+                placeholder: 'e.g., Health-conscious college students who want affordable, nutritious meal options between classes',
+                quizDesc: 'The specific group of people your product is designed to serve'
+            },
+            {
+                id: 'brand', name: 'Brand Name', color: 'var(--color-brand)', colorHex: '#5a0722',
+                icon: 'fa-tag',
+                definition: 'The name of your brand, product, or company. This anchors the positioning statement and gives it a clear subject. The brand name should be memorable, distinctive, and reflective of what you offer.',
+                questions: [
+                    'What is the official name of your brand or product?',
+                    'Does the name communicate anything about the brand?',
+                    'Is it memorable and easy to pronounce?',
+                    'Does it stand out from competitors\' names?'
+                ],
+                examples: [
+                    { brand: 'Nike', text: 'A short, powerful name inspired by the Greek goddess of victory\u2014memorable and associated with winning' },
+                    { brand: 'Apple', text: 'Simple, approachable, and unexpected in the tech industry\u2014immediately differentiating' },
+                    { brand: 'Starbucks', text: 'A literary reference (Moby Dick) that evokes adventure and the seafaring coffee trade' }
+                ],
+                tips: [
+                    'Your brand name is the anchor of your positioning',
+                    'It doesn\'t need to describe the product literally',
+                    'Consistency in naming builds recognition over time',
+                    'Consider how the name sounds in conversation'
+                ],
+                placeholder: 'e.g., FreshBite, QuickMeal, NourishU',
+                quizDesc: 'The name of the company or product being positioned'
+            },
+            {
+                id: 'category', name: 'Frame of Reference', color: 'var(--color-category)', colorHex: '#1B4965',
+                icon: 'fa-layer-group',
+                definition: 'The competitive category or market segment your brand belongs to. This tells the audience what kind of product or service you are, setting the context for your point of difference.',
+                questions: [
+                    'What product or service category do you compete in?',
+                    'Who are your direct and indirect competitors?',
+                    'How would a customer describe what you sell?',
+                    'Is there a new category you could define or own?'
+                ],
+                examples: [
+                    { brand: 'Nike', text: 'Athletic footwear and performance apparel\u2014competing with Adidas, Under Armour, and New Balance' },
+                    { brand: 'Apple', text: 'Premium consumer electronics and personal computing\u2014defined broadly to allow expansion' },
+                    { brand: 'Starbucks', text: 'Specialty coffee and third-place experience\u2014more than just coffee shops' }
+                ],
+                tips: [
+                    'Define it broadly enough to allow growth, narrowly enough to be meaningful',
+                    'This helps consumers understand what alternatives you replace',
+                    'Sometimes creating a new category is the strongest move',
+                    'The category sets the competitive context'
+                ],
+                placeholder: 'e.g., on-campus meal delivery service, plant-based snack brand, study productivity app',
+                quizDesc: 'The competitive category or market context the brand operates in'
+            },
+            {
+                id: 'difference', name: 'Point of Difference', color: 'var(--color-difference)', colorHex: '#B5651D',
+                icon: 'fa-star',
+                definition: 'The unique benefit or value proposition that sets your brand apart from competitors. This is the most critical part\u2014it answers "why should the customer choose you over anyone else?"',
+                questions: [
+                    'What do you do better than anyone else?',
+                    'What unique benefit do customers get from you?',
+                    'Is this difference meaningful to your target audience?',
+                    'Can competitors easily copy this advantage?'
+                ],
+                examples: [
+                    { brand: 'Nike', text: 'Delivers cutting-edge athletic innovation and inspires a "just do it" mindset that connects sport to personal empowerment' },
+                    { brand: 'Apple', text: 'Provides an unmatched integration of hardware, software, and services with industry-leading design and simplicity' },
+                    { brand: 'Starbucks', text: 'Creates a personalized, premium coffeehouse experience in a welcoming "third place" between home and work' }
+                ],
+                tips: [
+                    'Avoid vague claims like "best quality" or "great service"',
+                    'Focus on one key differentiator, not a laundry list',
+                    'The difference must matter to your target audience',
+                    'Sustainable advantages are better than temporary ones'
+                ],
+                placeholder: 'e.g., delivers chef-crafted meals in under 15 minutes using only locally sourced ingredients',
+                quizDesc: 'The unique benefit that sets the brand apart from competitors'
+            },
+            {
+                id: 'proof', name: 'Reason to Believe', color: 'var(--color-proof)', colorHex: '#6A4C93',
+                icon: 'fa-shield-halved',
+                definition: 'The evidence, proof points, or credentials that support your point of difference. Without a reason to believe, your positioning is just a claim. This makes it credible and trustworthy.',
+                questions: [
+                    'What evidence supports your key claim?',
+                    'Do you have data, research, or testimonials?',
+                    'What credentials or expertise back you up?',
+                    'Can you demonstrate the benefit tangibly?'
+                ],
+                examples: [
+                    { brand: 'Nike', text: 'Invests over $1B annually in R&D, partners with elite athletes worldwide, and holds thousands of performance technology patents' },
+                    { brand: 'Apple', text: 'Consistently ranks #1 in customer satisfaction, owns the entire product ecosystem, and spends billions annually on product development' },
+                    { brand: 'Starbucks', text: 'Sources 99% ethically-sourced coffee, employs specially trained baristas, and operates 35,000+ stores in 80+ markets worldwide' }
+                ],
+                tips: [
+                    'Be specific\u2014numbers, awards, and facts are compelling',
+                    'Customer testimonials and case studies count',
+                    'Proprietary technology or processes are strong proof',
+                    'Third-party validation (awards, certifications) adds credibility'
+                ],
+                placeholder: 'e.g., partners with 12 local farms, has a 4.8-star rating from 2,000+ student reviews, and uses AI-powered nutrition planning',
+                quizDesc: 'Evidence or proof that supports the brand\'s key claim'
+            }
+        ];
+
+        const EXAMPLES = [
+            {
+                brand: 'Nike', industry: 'Athletic Apparel',
+                audience: 'athletes and fitness enthusiasts who demand peak performance',
+                brandName: 'Nike',
+                category: 'athletic footwear and apparel company',
+                difference: 'inspires and equips every athlete with innovative products that push the boundaries of human potential',
+                proof: 'its decades of sports science research, partnerships with the world\'s top athletes, and continuous innovation in materials and design'
+            },
+            {
+                brand: 'Apple', industry: 'Consumer Technology',
+                audience: 'creative professionals and everyday users who value simplicity and beautiful design',
+                brandName: 'Apple',
+                category: 'premium personal technology company',
+                difference: 'delivers an integrated ecosystem of devices and services that just work, with unmatched design and user experience',
+                proof: 'its track record of industry-defining products, seamless hardware-software integration, and consistently top-ranked customer satisfaction scores'
+            },
+            {
+                brand: 'Starbucks', industry: 'Coffee & Beverages',
+                audience: 'urban professionals and students who seek a premium, personalized coffee ritual',
+                brandName: 'Starbucks',
+                category: 'specialty coffee and coffeehouse experience',
+                difference: 'offers a customizable, high-quality coffee experience in a welcoming environment that feels like a community gathering place',
+                proof: 'its commitment to ethically sourced beans, highly trained baristas, and a global network of consistently designed stores'
+            },
+            {
+                brand: 'Amazon', industry: 'E-Commerce & Technology',
+                audience: 'busy consumers who value convenience, selection, and fast delivery',
+                brandName: 'Amazon',
+                category: 'online retail and technology platform',
+                difference: 'provides the widest selection with the fastest, most reliable delivery and a frictionless shopping experience',
+                proof: 'its massive logistics network, Prime\'s same-day and next-day delivery capabilities, and customer-obsessed culture driven by data and innovation'
+            },
+            {
+                brand: 'Tesla', industry: 'Automotive & Energy',
+                audience: 'environmentally conscious and tech-forward drivers who refuse to compromise on performance',
+                brandName: 'Tesla',
+                category: 'electric vehicle and clean energy company',
+                difference: 'proves that sustainable transportation can be thrilling, offering zero-emission vehicles with supercar-level acceleration and cutting-edge autonomous technology',
+                proof: 'its industry-leading battery technology, the expansive Supercharger network, and over-the-air software updates that continuously improve the driving experience'
+            }
+        ];
+
+        const QUIZ_ITEMS = [
+            { desc: 'The specific group of people your product is designed to serve', answer: 'audience' },
+            { desc: 'The competitive market context in which your brand operates', answer: 'category' },
+            { desc: 'The unique benefit that separates you from all competitors', answer: 'difference' },
+            { desc: 'Evidence and credentials that make your claims believable', answer: 'proof' },
+            { desc: 'The name that anchors your positioning and builds recognition', answer: 'brand' }
+        ];
+
+        // =====================
+        // STATE
+        // =====================
+        const state = {
+            currentSection: 'welcome',
+            visitedSections: new Set(['welcome']),
+            learnVisited: new Set(),
+            builderStep: 1,
+            inputs: { audience: '', brand: '', category: '', difference: '', proof: '' },
+            quizCompleted: false,
+            selectedQuizDesc: null,
+            quizMatches: {}
+        };
+
+        // =====================
+        // DOM HELPERS
+        // =====================
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        // =====================
+        // NAVIGATION
+        // =====================
+        window.navigateTo = function(sectionId) {
+            // Hide current
+            $$('.app-section').forEach(s => s.classList.remove('active'));
+            $$('.nav-link').forEach(l => { l.classList.remove('active'); l.setAttribute('aria-selected', 'false'); });
+
+            // Show target
+            $(`#${sectionId}`).classList.add('active');
+            const navLink = $(`.nav-link[data-section="${sectionId}"]`);
+            if (navLink) { navLink.classList.add('active'); navLink.setAttribute('aria-selected', 'true'); }
+
+            state.currentSection = sectionId;
+            state.visitedSections.add(sectionId);
+            updateProgress();
+
+            // Generate preview when entering preview section
+            if (sectionId === 'preview') generatePreview();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function updateProgress() {
+            const sections = ['welcome', 'learn', 'examples', 'builder', 'preview'];
+            sections.forEach(s => {
+                const seg = $(`.progress-segment[data-seg="${s}"]`);
+                if (seg) seg.classList.toggle('completed', state.visitedSections.has(s));
+            });
+        }
+
+        // =====================
+        // LEARN SECTION
+        // =====================
+        function buildLearnPanels() {
+            const container = $('#learn-panels');
+            COMPONENTS.forEach((comp, idx) => {
+                const panel = document.createElement('div');
+                panel.className = `component-panel${idx === 0 ? ' active' : ''}`;
+                panel.id = `panel-${comp.id}`;
+                panel.setAttribute('role', 'tabpanel');
+                panel.style.setProperty('--panel-color', comp.colorHex);
+                panel.innerHTML = `
+                    <div class="panel-header" style="border-left-color: ${comp.colorHex}">
+                        <h3><i class="fas ${comp.icon}"></i> ${comp.name}</h3>
+                        <p class="panel-definition">${comp.definition}</p>
+                    </div>
+                    <div class="panel-body">
+                        <div class="key-questions">
+                            <h4><i class="fas fa-question-circle"></i> Key Questions to Ask</h4>
+                            <ul>${comp.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+                        </div>
+                        <div class="tips-box">
+                            <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+                            <ul>${comp.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+                        </div>
+                        <div class="brand-examples">
+                            <h4><i class="fas fa-building"></i> Real-World Examples</h4>
+                            <div class="example-cards-row">
+                                ${comp.examples.map(ex => `
+                                    <div class="mini-example-card" style="border-left-color: ${comp.colorHex}">
+                                        <div class="brand-icon" style="color: ${comp.colorHex}">${ex.brand}</div>
+                                        <p>${ex.text}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        ${idx < COMPONENTS.length - 1
+                            ? `<button class="btn-primary" onclick="switchLearnTab('${COMPONENTS[idx + 1].id}')">Next: ${COMPONENTS[idx + 1].name} <i class="fas fa-arrow-right"></i></button>`
+                            : `<button class="btn-primary" id="btn-show-quiz" style="display:none" onclick="document.getElementById('learn-quiz').scrollIntoView({behavior:'smooth'})">Take the Knowledge Check <i class="fas fa-arrow-down"></i></button>`
+                        }
+                    </div>
+                `;
+                container.appendChild(panel);
+            });
+            // Mark first tab visited
+            state.learnVisited.add('audience');
+            updateLearnTabs();
+        }
+
+        window.switchLearnTab = function(compId) {
+            $$('.component-panel').forEach(p => p.classList.remove('active'));
+            $$('.comp-tab').forEach(t => t.classList.remove('active'));
+
+            $(`#panel-${compId}`).classList.add('active');
+            const tab = $(`.comp-tab[data-comp="${compId}"]`);
+            if (tab) tab.classList.add('active');
+
+            state.learnVisited.add(compId);
+            updateLearnTabs();
+        };
+
+        function updateLearnTabs() {
+            $$('.comp-tab').forEach(tab => {
+                const compId = tab.dataset.comp;
+                tab.classList.toggle('visited', state.learnVisited.has(compId));
+            });
+
+            // Show quiz when all visited
+            if (state.learnVisited.size >= 5) {
+                const quiz = $('#learn-quiz');
+                if (quiz) quiz.classList.remove('hidden');
+                const btn = $('#btn-show-quiz');
+                if (btn) btn.style.display = '';
+            }
+        }
+
+        // =====================
+        // QUIZ
+        // =====================
+        function buildQuiz() {
+            const descContainer = $('#quiz-descriptions');
+            const compContainer = $('#quiz-components');
+
+            // Shuffle descriptions
+            const shuffledDescs = [...QUIZ_ITEMS].sort(() => Math.random() - 0.5);
+            const compOrder = [...COMPONENTS].sort(() => Math.random() - 0.5);
+
+            shuffledDescs.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-item';
+                div.dataset.answer = item.answer;
+                div.dataset.type = 'desc';
+                div.textContent = item.desc;
+                div.addEventListener('click', () => selectQuizItem(div, 'desc'));
+                descContainer.appendChild(div);
+            });
+
+            compOrder.forEach(comp => {
+                const div = document.createElement('div');
+                div.className = 'quiz-item';
+                div.dataset.comp = comp.id;
+                div.dataset.type = 'comp';
+                div.style.borderLeftColor = comp.colorHex;
+                div.style.borderLeftWidth = '3px';
+                div.innerHTML = `<i class="fas ${comp.icon}" style="color:${comp.colorHex}; margin-right:0.4rem"></i>${comp.name}`;
+                div.addEventListener('click', () => selectQuizItem(div, 'comp'));
+                compContainer.appendChild(div);
+            });
+        }
+
+        function selectQuizItem(el, type) {
+            if (el.classList.contains('matched')) return;
+
+            if (type === 'desc') {
+                $$('.quiz-item[data-type="desc"]').forEach(d => d.classList.remove('selected'));
+                el.classList.add('selected');
+                state.selectedQuizDesc = el;
+            } else if (type === 'comp' && state.selectedQuizDesc) {
+                const answer = state.selectedQuizDesc.dataset.answer;
+                const selected = el.dataset.comp;
+
+                if (answer === selected) {
+                    state.selectedQuizDesc.classList.remove('selected');
+                    state.selectedQuizDesc.classList.add('matched', 'correct');
+                    el.classList.add('matched', 'correct');
+                    state.quizMatches[answer] = true;
+                    state.selectedQuizDesc = null;
+
+                    // Check if all matched
+                    if (Object.keys(state.quizMatches).length === 5) {
+                        state.quizCompleted = true;
+                        setTimeout(() => {
+                            $('#quiz-result').style.display = 'block';
+                        }, 500);
+                    }
+                } else {
+                    el.classList.add('incorrect');
+                    setTimeout(() => el.classList.remove('incorrect'), 400);
+                }
+            }
+        }
+
+        // =====================
+        // EXAMPLES SECTION
+        // =====================
+        function buildExamples() {
+            const container = $('#examples-list');
+            EXAMPLES.forEach((ex, idx) => {
+                const card = document.createElement('div');
+                card.className = 'example-card';
+                card.innerHTML = `
+                    <div class="example-brand-header">
+                        <h3>${ex.brand}</h3>
+                        <span class="brand-industry">${ex.industry}</span>
+                    </div>
+                    <blockquote class="color-coded-statement">
+                        For <span class="comp-highlight hl-audience"><span class="tooltip">Target Audience</span>${ex.audience}</span>,
+                        <span class="comp-highlight hl-brand"><span class="tooltip">Brand Name</span>${ex.brandName}</span> is the
+                        <span class="comp-highlight hl-category"><span class="tooltip">Frame of Reference</span>${ex.category}</span>
+                        that <span class="comp-highlight hl-difference"><span class="tooltip">Point of Difference</span>${ex.difference}</span>
+                        because of <span class="comp-highlight hl-proof"><span class="tooltip">Reason to Believe</span>${ex.proof}</span>.
+                    </blockquote>
+                    <button class="example-breakdown-toggle" onclick="toggleBreakdown(this)">
+                        <i class="fas fa-chevron-right"></i> View component breakdown
+                    </button>
+                    <div class="example-breakdown">
+                        <div class="breakdown-item"><span class="breakdown-label" style="background:var(--color-audience)">Audience</span><span class="breakdown-value">${ex.audience}</span></div>
+                        <div class="breakdown-item"><span class="breakdown-label" style="background:var(--color-brand)">Brand</span><span class="breakdown-value">${ex.brandName}</span></div>
+                        <div class="breakdown-item"><span class="breakdown-label" style="background:var(--color-category)">Category</span><span class="breakdown-value">${ex.category}</span></div>
+                        <div class="breakdown-item"><span class="breakdown-label" style="background:var(--color-difference)">Difference</span><span class="breakdown-value">${ex.difference}</span></div>
+                        <div class="breakdown-item"><span class="breakdown-label" style="background:var(--color-proof)">Proof</span><span class="breakdown-value">${ex.proof}</span></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.toggleBreakdown = function(btn) {
+            btn.classList.toggle('open');
+            const breakdown = btn.nextElementSibling;
+            breakdown.classList.toggle('open');
+        };
+
+        // =====================
+        // BUILDER SECTION
+        // =====================
+        function buildBuilder() {
+            // Progress stepper
+            const progress = $('#step-progress');
+            COMPONENTS.forEach((comp, idx) => {
+                if (idx > 0) {
+                    const conn = document.createElement('div');
+                    conn.className = 'step-connector';
+                    conn.id = `conn-${idx}`;
+                    progress.appendChild(conn);
+                }
+                const indicator = document.createElement('div');
+                indicator.className = `step-indicator${idx === 0 ? ' active' : ''}`;
+                indicator.dataset.step = idx + 1;
+                indicator.style.setProperty('--step-color', comp.colorHex);
+                indicator.innerHTML = `<div class="step-circle" style="--color:${comp.colorHex}">${idx + 1}</div><span>${comp.name.split(' ')[0]}</span>`;
+                progress.appendChild(indicator);
+            });
+
+            // Steps
+            const container = $('#builder-steps');
+            COMPONENTS.forEach((comp, idx) => {
+                const step = document.createElement('div');
+                step.className = `builder-step${idx === 0 ? ' active' : ''}`;
+                step.id = `step-${idx + 1}`;
+                step.style.setProperty('--step-color', comp.colorHex);
+                step.innerHTML = `
+                    <div class="step-content">
+                        <div class="step-guidance">
+                            <h3 style="color:${comp.colorHex}"><i class="fas ${comp.icon}"></i> Step ${idx + 1}: ${comp.name}</h3>
+                            <p class="step-question">${comp.questions[0]}</p>
+                            <div class="guidance-tips">
+                                <p>Think about:</p>
+                                <ul>${comp.questions.slice(1).map(q => `<li>${q}</li>`).join('')}</ul>
+                            </div>
+                            <div class="guidance-example">
+                                <p>Example:</p>
+                                <p class="example-text">"${comp.placeholder.replace('e.g., ', '')}"</p>
+                            </div>
+                        </div>
+                        <div class="step-input">
+                            <label for="input-${comp.id}">Your ${comp.name.toLowerCase()}:</label>
+                            <textarea id="input-${comp.id}" placeholder="${comp.placeholder}" maxlength="300" rows="4"></textarea>
+                            <div class="char-counter"><span id="count-${comp.id}">0</span>/300</div>
+                            <div class="input-feedback" id="feedback-${comp.id}"></div>
+                        </div>
+                    </div>
+                    <div class="step-navigation">
+                        <button class="btn-secondary" ${idx === 0 ? 'disabled' : ''} onclick="goToStep(${idx})">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        ${idx < COMPONENTS.length - 1
+                            ? `<button class="btn-primary" onclick="validateAndNext(${idx + 1})">Next: ${COMPONENTS[idx + 1].name} <i class="fas fa-arrow-right"></i></button>`
+                            : `<button class="btn-primary" onclick="validateAndFinish()">Preview Statement <i class="fas fa-eye"></i></button>`
+                        }
+                    </div>
+                `;
+                container.appendChild(step);
+            });
+
+            // Textarea event listeners
+            COMPONENTS.forEach(comp => {
+                const textarea = $(`#input-${comp.id}`);
+                textarea.addEventListener('input', () => {
+                    state.inputs[comp.id] = textarea.value;
+                    updateCharCounter(comp.id);
+                    updateLivePreview();
+                    provideFeedback(comp.id);
+                    saveToLocalStorage();
+                });
+            });
+
+            updateLivePreview();
+        }
+
+        window.goToStep = function(stepNum) {
+            if (stepNum < 1 || stepNum > 5) return;
+            state.builderStep = stepNum;
+
+            $$('.builder-step').forEach(s => s.classList.remove('active'));
+            $(`#step-${stepNum}`).classList.add('active');
+
+            // Update stepper
+            $$('.step-indicator').forEach((ind, idx) => {
+                ind.classList.remove('active', 'completed');
+                if (idx + 1 === stepNum) ind.classList.add('active');
+                else if (idx + 1 < stepNum) ind.classList.add('completed');
+            });
+            $$('.step-connector').forEach((conn, idx) => {
+                conn.classList.toggle('completed', idx + 1 < stepNum);
+            });
+        };
+
+        window.validateAndNext = function(currentStep) {
+            const comp = COMPONENTS[currentStep - 1];
+            const val = state.inputs[comp.id].trim();
+            if (val.length < 3) {
+                const feedback = $(`#feedback-${comp.id}`);
+                feedback.textContent = 'Please enter at least a few words before continuing.';
+                feedback.className = 'input-feedback warn';
+                const textarea = $(`#input-${comp.id}`);
+                textarea.style.animation = 'shake 400ms ease';
+                setTimeout(() => textarea.style.animation = '', 400);
+                return;
+            }
+            goToStep(currentStep + 1);
+        };
+
+        window.validateAndFinish = function() {
+            const comp = COMPONENTS[4];
+            const val = state.inputs[comp.id].trim();
+            if (val.length < 3) {
+                const feedback = $(`#feedback-${comp.id}`);
+                feedback.textContent = 'Please enter at least a few words before continuing.';
+                feedback.className = 'input-feedback warn';
+                return;
+            }
+            navigateTo('preview');
+        };
+
+        function updateCharCounter(compId) {
+            const textarea = $(`#input-${compId}`);
+            const counter = $(`#count-${compId}`);
+            const len = textarea.value.length;
+            counter.textContent = len;
+            const parent = counter.parentElement;
+            parent.classList.remove('warning', 'limit');
+            if (len > 250) parent.classList.add('limit');
+            else if (len > 200) parent.classList.add('warning');
+        }
+
+        function provideFeedback(compId) {
+            const val = state.inputs[compId].trim().toLowerCase();
+            const feedback = $(`#feedback-${compId}`);
+            feedback.className = 'input-feedback';
+
+            if (!val) { feedback.textContent = ''; return; }
+
+            if (compId === 'audience') {
+                if (val.includes('everyone') || val.includes('all people') || val.includes('anybody')) {
+                    feedback.textContent = 'Tip: Try to be more specific. "Everyone" makes it hard to differentiate your brand.';
+                    feedback.className = 'input-feedback warn';
+                } else if (val.length > 20) {
+                    feedback.textContent = 'Looking good! A specific audience leads to stronger positioning.';
+                }
+            } else if (compId === 'difference') {
+                if (val.includes('best') || val.includes('greatest') || val === 'great' || val.includes('number one')) {
+                    feedback.textContent = 'Tip: Instead of "best," try describing specifically what makes you different.';
+                    feedback.className = 'input-feedback warn';
+                } else if (val.length > 20) {
+                    feedback.textContent = 'Nice! Make sure this benefit is meaningful to your target audience.';
+                }
+            } else if (compId === 'category' && val.length > 5 && val.length < 15) {
+                feedback.textContent = 'Consider being more specific about your competitive category.';
+            } else if (compId === 'proof') {
+                if (val.length > 20) {
+                    feedback.textContent = 'Strong! Specific evidence like numbers, awards, or data makes claims credible.';
+                }
+            }
+        }
+
+        function updateLivePreview() {
+            const fields = ['audience', 'brand', 'category', 'difference', 'proof'];
+            const labels = ['target audience', 'brand', 'category', 'point of difference', 'reason to believe'];
+            const parts = [];
+
+            parts.push('For ');
+            parts.push(makePreviewSlot('audience', labels[0]));
+            parts.push(', ');
+            parts.push(makePreviewSlot('brand', labels[1]));
+            parts.push(' is the ');
+            parts.push(makePreviewSlot('category', labels[2]));
+            parts.push(' that ');
+            parts.push(makePreviewSlot('difference', labels[3]));
+            parts.push(' because ');
+            parts.push(makePreviewSlot('proof', labels[4]));
+            parts.push('.');
+
+            $('#preview-text').innerHTML = parts.join('');
+        }
+
+        function makePreviewSlot(compId, label) {
+            const val = state.inputs[compId].trim();
+            if (val) {
+                return `<span class="preview-slot filled-${compId}">${escapeHtml(val)}</span>`;
+            }
+            return `<span class="preview-slot empty">[${label}]</span>`;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // =====================
+        // PREVIEW & EXPORT
+        // =====================
+        function generatePreview() {
+            const s = state.inputs;
+            const finalEl = $('#final-statement');
+            finalEl.innerHTML = `
+                For <span class="comp-highlight hl-audience">${escapeHtml(s.audience)}</span>,
+                <span class="comp-highlight hl-brand">${escapeHtml(s.brand)}</span> is the
+                <span class="comp-highlight hl-category">${escapeHtml(s.category)}</span>
+                that <span class="comp-highlight hl-difference">${escapeHtml(s.difference)}</span>
+                because <span class="comp-highlight hl-proof">${escapeHtml(s.proof)}</span>.
+            `;
+
+            $('#bd-audience').textContent = s.audience;
+            $('#bd-brand').textContent = s.brand;
+            $('#bd-category').textContent = s.category;
+            $('#bd-difference').textContent = s.difference;
+            $('#bd-proof').textContent = s.proof;
+        }
+
+        window.copyToClipboard = function() {
+            const s = state.inputs;
+            const text = `For ${s.audience}, ${s.brand} is the ${s.category} that ${s.difference} because ${s.proof}.`;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied to clipboard!', 'success');
+            }).catch(() => {
+                // Fallback
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Copied to clipboard!', 'success');
+            });
+        };
+
+        window.downloadAsText = function() {
+            const s = state.inputs;
+            const text = [
+                'POSITIONING STATEMENT',
+                '=' .repeat(50),
+                '',
+                `For ${s.audience}, ${s.brand} is the ${s.category} that ${s.difference} because ${s.proof}.`,
+                '',
+                'COMPONENT BREAKDOWN',
+                '-'.repeat(50),
+                `Target Audience: ${s.audience}`,
+                `Brand Name: ${s.brand}`,
+                `Frame of Reference: ${s.category}`,
+                `Point of Difference: ${s.difference}`,
+                `Reason to Believe: ${s.proof}`,
+                '',
+                'Generated with the Positioning Statement Builder',
+                'Loyola University Chicago — Introduction to Marketing'
+            ].join('\n');
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `positioning-statement-${(s.brand || 'draft').replace(/\s+/g, '-').toLowerCase()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Downloaded!', 'success');
+        };
+
+        window.startOver = function() {
+            if (!confirm('Are you sure you want to start over? All your work will be cleared.')) return;
+            state.inputs = { audience: '', brand: '', category: '', difference: '', proof: '' };
+            COMPONENTS.forEach(c => {
+                const ta = $(`#input-${c.id}`);
+                if (ta) { ta.value = ''; }
+                const counter = $(`#count-${c.id}`);
+                if (counter) counter.textContent = '0';
+                const fb = $(`#feedback-${c.id}`);
+                if (fb) fb.textContent = '';
+            });
+            localStorage.removeItem('psb-inputs');
+            goToStep(1);
+            updateLivePreview();
+            navigateTo('builder');
+            showToast('Cleared! Start fresh.', 'success');
+        };
+
+        // =====================
+        // PERSISTENCE
+        // =====================
+        function saveToLocalStorage() {
+            try { localStorage.setItem('psb-inputs', JSON.stringify(state.inputs)); } catch(e) {}
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('psb-inputs');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    Object.assign(state.inputs, parsed);
+                    COMPONENTS.forEach(c => {
+                        const ta = $(`#input-${c.id}`);
+                        if (ta && state.inputs[c.id]) {
+                            ta.value = state.inputs[c.id];
+                            updateCharCounter(c.id);
+                        }
+                    });
+                    updateLivePreview();
+                }
+            } catch(e) {}
+        }
+
+        // =====================
+        // TOAST
+        // =====================
+        function showToast(message, type) {
+            const toast = $('#toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // =====================
+        // INIT
+        // =====================
+        function init() {
+            // Nav clicks
+            $$('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigateTo(link.dataset.section);
+                });
+            });
+
+            // Learn tab clicks
+            $$('.comp-tab').forEach(tab => {
+                tab.addEventListener('click', () => switchLearnTab(tab.dataset.comp));
+            });
+
+            // Build all dynamic content
+            buildLearnPanels();
+            buildQuiz();
+            buildExamples();
+            buildBuilder();
+
+            // Load saved data
+            loadFromLocalStorage();
+
+            // Initial progress
+            updateProgress();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    })();
+    </script>
+</body>
+</html>
